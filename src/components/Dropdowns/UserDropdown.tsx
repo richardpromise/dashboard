@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Dropdown, Menu, Avatar } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import image from "../../assets/img/team-1-800x800.jpg";

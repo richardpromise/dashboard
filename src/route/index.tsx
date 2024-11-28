@@ -4,18 +4,35 @@ import Admin from "../layout/admin";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Dashboard from "../modules/admin/Dashboard";
 import Tables from "../modules/admin/Tables";
+import NotFoundPage from "../components/404--page";
+
+function MainLayout({ children }: any) {
+  return <div className="h-dvh w-full">{children ? children : <Outlet />}</div>;
+}
 
 export default function Modules() {
   const server = createBrowserRouter([
     {
-      path: "/",
-
-      element: <Admin />,
+      element: <MainLayout />,
       children: [
-        { index: true, element: <Dashboard /> },
         {
-          path: "/tables",
-          element: <Tables />,
+          path: "/",
+          element: <Admin />,
+          children: [
+            {
+              index: true,
+              element: <Dashboard />,
+            },
+            {
+              path: "/tables",
+              element: <Tables />,
+            },
+          ],
+        },
+
+        {
+          path: "*",
+          element: <NotFoundPage />,
         },
       ],
     },

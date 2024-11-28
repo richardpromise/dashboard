@@ -1,10 +1,8 @@
 /*eslint-disable*/
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import UserDropdown from "../Dropdowns/UserDropdown";
 import NotificationDropdown from "../Dropdowns/NotificationDropdown";
-// import NotificationDropdown from "../Dropdowns/NotificationDropdown";
-// import UserDropdown from "../Dropdowns/UserDropdown";
 
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
@@ -14,9 +12,7 @@ export default function Sidebar() {
       category: "Admin Layout Pages",
       links: [
         { to: "/", label: "Dashboard", icon: "fas fa-tv" },
-        // { to: "/admin/settings", label: "Settings", icon: "fas fa-tools" },
         { to: "/tables", label: "Tables", icon: "fas fa-table" },
-        // { to: "/admin/maps", label: "Maps", icon: "fas fa-map-marked" },
       ],
     },
     {
@@ -30,35 +26,12 @@ export default function Sidebar() {
         },
       ],
     },
-    // {
-    //   category: "No Layout Pages",
-    //   links: [
-    //     { to: "/landing", label: "Landing Page", icon: "fas fa-newspaper" },
-    //     { to: "/profile", label: "Profile Page", icon: "fas fa-user-circle" },
-    //   ],
-    // },
-    // {
-    //   category: "Documentation",
-    //   links: [
-    //     { to: "/docs/styles", label: "Styles", icon: "fas fa-paint-brush" },
-    //     {
-    //       to: "/docs/components",
-    //       label: "CSS Components",
-    //       icon: "fab fa-css3-alt",
-    //     },
-    //     { to: "/docs/angular", label: "Angular", icon: "fab fa-angular" },
-    //     {
-    //       to: "/docs/javascript",
-    //       label: "JavaScript",
-    //       icon: "fab fa-js-square",
-    //     },
-    //     { to: "/docs/nextjs", label: "NextJS", icon: "fab fa-react" },
-    //     { to: "/docs/react", label: "React", icon: "fab fa-react" },
-    //     { to: "/docs/svelte", label: "Svelte", icon: "fas fa-link" },
-    //     { to: "/docs/vue", label: "VueJS", icon: "fab fa-vuejs" },
-    //   ],
-    // },
   ];
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const hadleNavigation = ({ path }: any) => {
+    navigate(path);
+  };
 
   return (
     <>
@@ -68,10 +41,8 @@ export default function Sidebar() {
         }`}
       >
         <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
-          {/* Toggler */}
-          <button
+          <div
             className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded"
-            type="button"
             onClick={() =>
               setCollapseShow(
                 collapseShow === "hidden" ? "bg-white m-2 py-3 px-6" : "hidden"
@@ -79,15 +50,15 @@ export default function Sidebar() {
             }
           >
             <i className="fas fa-bars"></i>
-          </button>
-          {/* Brand */}
+          </div>
+
           <Link
             className="text-blueGray-600 text-sm uppercase font-bold p-4 px-0"
             to="/"
           >
             Mogrex
           </Link>
-          {/* User */}
+
           <ul className="md:hidden items-center flex flex-wrap list-none">
             <li className="inline-block relative">
               <NotificationDropdown />
@@ -96,11 +67,10 @@ export default function Sidebar() {
               <UserDropdown />
             </li>
           </ul>
-          {/* Collapse */}
+
           <div
             className={`md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded ${collapseShow}`}
           >
-            {/* Collapse header */}
             <div className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-blueGray-200">
               <div className="flex justify-between">
                 <Link
@@ -109,13 +79,12 @@ export default function Sidebar() {
                 >
                   Mogrex
                 </Link>
-                <button
-                  type="button"
+                <div
                   className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl bg-transparent rounded"
                   onClick={() => setCollapseShow("hidden")}
                 >
                   <i className="fas fa-times"></i>
-                </button>
+                </div>
               </div>
             </div>
             {/* Form */}
@@ -137,24 +106,24 @@ export default function Sidebar() {
                 </h6>
                 <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                   {section.links.map((link, idx) => (
-                    <li key={idx} className="items-center">
-                      <Link
+                    <li key={idx} className="items-center cursor-pointer">
+                      <div
                         className={`text-xs uppercase py-3 font-bold block ${
-                          window.location.href.indexOf(link.to) !== -1
+                          pathname === link.to
                             ? "text-lightBlue-500 hover:text-lightBlue-600"
                             : "text-blueGray-700 hover:text-blueGray-500"
                         }`}
-                        to={link.to}
+                        onClick={() => hadleNavigation(link.to)}
                       >
                         <i
                           className={`${link.icon} mr-2 text-sm ${
-                            window.location.href.indexOf(link.to) !== -1
+                            pathname === link.to
                               ? "opacity-75"
                               : "text-blueGray-300"
                           }`}
                         ></i>{" "}
                         {link.label}
-                      </Link>
+                      </div>
                     </li>
                   ))}
                 </ul>
