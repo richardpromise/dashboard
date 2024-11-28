@@ -1,84 +1,44 @@
-import React, { useRef, useState } from "react";
-import { createPopper } from "@popperjs/core";
+import React, { useState } from "react";
+import { Dropdown, Menu, Avatar } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import image from "../../assets/img/team-1-800x800.jpg";
 
 const UserDropdown: React.FC = () => {
-  // dropdown props
-  const [dropdownPopoverShow, setDropdownPopoverShow] = useState(false);
-  const btnDropdownRef = useRef<HTMLAnchorElement | null>(null);
-  const popoverDropdownRef = useRef<HTMLDivElement | null>(null);
-
-  const openDropdownPopover = () => {
-    if (btnDropdownRef.current && popoverDropdownRef.current) {
-      createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
-        placement: "bottom-start",
-      });
-      setDropdownPopoverShow(true);
-    }
-  };
-
-  const closeDropdownPopover = () => {
-    setDropdownPopoverShow(false);
-  };
+  // Define the menu items
+  const menu = (
+    <Menu>
+      <Menu.Item key="1" onClick={(e) => console.log(e.key)}>
+        Action
+      </Menu.Item>
+      <Menu.Item key="2" onClick={(e) => console.log(e.key)}>
+        Another action
+      </Menu.Item>
+      <Menu.Item key="3" onClick={(e) => console.log(e.key)}>
+        Something else here
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="4" onClick={(e) => console.log(e.key)}>
+        Separated link
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
-    <>
-      <a
+    <Dropdown overlay={menu} trigger={["click"]}>
+      <div
         className="text-blueGray-500 block"
-        href="#pablo"
-        ref={btnDropdownRef}
-        onClick={(e) => {
-          e.preventDefault();
-          dropdownPopoverShow ? closeDropdownPopover() : openDropdownPopover();
-        }}
+        onClick={(e) => e.preventDefault()}
       >
         <div className="items-center flex">
-          <span className="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
-            <img
-              alt="..."
-              className="w-full rounded-full align-middle border-none shadow-lg"
-              src={image}
-            />
-          </span>
+          <Avatar
+            size={48}
+            src={image}
+            style={{ backgroundColor: "#87d068" }}
+          />
+          <DownOutlined style={{ fontSize: 16, marginLeft: 8 }} />
         </div>
-      </a>
-      <div
-        ref={popoverDropdownRef}
-        className={`${
-          dropdownPopoverShow ? "block" : "hidden"
-        } bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48`}
-      >
-        <a
-          href="#pablo"
-          className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          onClick={(e) => e.preventDefault()}
-        >
-          Action
-        </a>
-        <a
-          href="#pablo"
-          className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          onClick={(e) => e.preventDefault()}
-        >
-          Another action
-        </a>
-        <a
-          href="#pablo"
-          className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          onClick={(e) => e.preventDefault()}
-        >
-          Something else here
-        </a>
-        <div className="h-0 my-2 border border-solid border-blueGray-100" />
-        <a
-          href="#pablo"
-          className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          onClick={(e) => e.preventDefault()}
-        >
-          Separated link
-        </a>
       </div>
-    </>
+    </Dropdown>
   );
 };
 
